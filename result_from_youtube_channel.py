@@ -28,8 +28,8 @@ channel_id = sys.argv[1]
 with open(data_path+channel_id+'/Statistics_and_commentWord.json') as readcom :
     com_stats = json.load(readcom)
 
-for video in com_stats :
-    plot_histo_from_dict(video['commentsWord'], 1, 2, 3, data_path+channel_id+'/Occurence_of_words_in_comments_for_video_'+video['ID']+'.pdf')
+# for video in com_stats :
+#     plot_histo_from_dict(video['commentsWord'], 1, 2, 3, data_path+channel_id+'/Occurence_of_words_in_comments_for_video_'+video['ID']+'.pdf')
 
 pl.plot([video['viewCount'] for video in com_stats],[video['%_comment'] for video in com_stats], 'bo')
 pl.xlabel('Number of view')
@@ -50,8 +50,9 @@ vote_ratio_dev = np.std([video['%_vote'] for video in com_stats])
 mean_ratio_wordInTags = np.mean([video['ratio_wordInTags'] for video in com_stats])
 wordInTags_dev = np.std([video['ratio_wordInTags'] for video in com_stats])
 
+
 with open(data_path+channel_id+'/Ratios_for_comment_and_vote.txt', 'w') as ratio_file :
-    ratio_file.write("Comment ratio is {0:.5f} +- {0:.5f} of video's view. ".format(mean_comment_ratio, comment_ratio_dev))
-    ratio_file.write("Vote ratio is {0:.5f} +- {0:.5f} of video's view. ".format(mean_vote_ratio, vote_ratio_dev))
-    ratio_file.write("ratio of comments word in video tags is {0:.5f} +- {0:.5f}. ".format(mean_ratio_wordInTags, wordInTags_dev))
+    ratio_file.write("Comment ratio is %8.5f +- %8.5f of video's view. " % (mean_comment_ratio, comment_ratio_dev))
+    ratio_file.write("Vote ratio is %8.5f +- %8.5f of video's view. " % (mean_vote_ratio, vote_ratio_dev))
+    ratio_file.write("Comments word in video tags is %d. " % len([video['matchingWordInTags'] for video in com_stats])/float(len(com_stats)))
 
